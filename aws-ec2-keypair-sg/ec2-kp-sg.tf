@@ -13,7 +13,7 @@ resource "aws_security_group" "sg" {
     for_each = [22, 80]
     iterator = port
     content {
-      description = "SSH from VPC"
+      description = "SSH & HTTP PORTS"
       from_port   = port.value
       to_port     = port.value
       protocol    = "tcp"
