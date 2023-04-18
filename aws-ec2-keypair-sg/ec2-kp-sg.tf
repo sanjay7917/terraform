@@ -1,9 +1,11 @@
+#CREATE KEY PAIR
 resource "aws_key_pair" "key" {
   key_name = "terra"
   #   public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC7E74lLqFYG7tvIBzCanLsvRh59DbDA0o+X0bOVFH3G6N1lJWyeLkRm4HB/IHhAXkcZZIWqMpFA8Wl1DXSVY78UVgpD9rB43FqHNCJtkBcT+wAe+ypsQ6eYGVgMLgke7n3vupCD1Rq//LWgKt3eTPWWQCe/MR+fyDBN8lbXfNr3/VLIPPNH0rbLizFTsytV7s3Fg46jIJaIvb65AjGfLDdj4ob8MX3bHKj/b+KwMFXVpD2/w65l8MKMde0qAEVn82GrVgeaKJHUFPhCMmX3t+JjhZDyDnFEnU1aqQY6E8itf5SEzGTNFjFrwzpODWDizmU8nim/5pc+yJMg0ujA3Z7w5ke+U61KJygYqyfqV0T5MTqk6LrB73g0TLVSS6aBJ/ZCMGCiHC6NkrfaTzAiDGU0cuinRR5p2WY4gCy1EOER1on1yna3dFBUq+XsGtAp6GQXdS+tKXzynwPAeiPQi3vJrUZlNwGIcSNCN6qUxbg+Tg49OTdcJ/JpCnZDFDmBes= killu@Sanjus-MacBook-Air.local"
   public_key = file("${path.module}/id_rsa.pub")
 
 }
+#CREATE SECURITY GROUP AND ADD SSH & HTTP PORTS
 resource "aws_security_group" "sg" {
   name        = "sg"
   description = "test sg"
@@ -26,6 +28,7 @@ resource "aws_security_group" "sg" {
     ipv6_cidr_blocks = ["::/0"]
   }
 }
+#CREATE INSTANCE AND ADD KEYPAIR AND SECURITY GROUP
 resource "aws_instance" "server" {
   ami                    = "ami-06c4532923d4ba1ec"
   instance_type          = "t2.micro"
