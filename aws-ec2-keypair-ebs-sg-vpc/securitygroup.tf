@@ -3,7 +3,7 @@ resource "aws_security_group" "sg" {
   description = "test sg"
   vpc_id      = aws_vpc.myvpc.id
   dynamic "ingress" {
-    for_each = [22, 80]
+    for_each = [22, 80, 8080]
     iterator = port
     content {
       description = "SSH from VPC"
