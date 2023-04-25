@@ -10,7 +10,7 @@
 sudo apt-get install nginx -y
 sudo systemctl start nginx 
 sudo systemctl enable nginx
-echo "Hello From Nginx" > /var/www/html/index.nginx-debian.html
+echo "Machine IP: $HOSTNAME" > /var/www/html/index.nginx-debian.html
 
 #JENKINS INSTALLATION
 # curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key | sudo tee /usr/share/keyrings/jenkins-keyring.asc > /dev/null
