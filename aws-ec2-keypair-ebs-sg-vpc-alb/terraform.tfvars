@@ -55,12 +55,6 @@ pub_sub_tag = {
 pri_sub_tag = {
   Type = "Internal"
 }
-# vpc_pub_subnet1_az          = "us-east-2a"
-# vpc_pub_subnet1_cidr        = "10.0.1.0/24"
-# vpc_pub_subnet2_az          = "us-east-2b"
-# vpc_pub_subnet2_cidr        = "10.0.2.0/24"
-# vpc_pri_subnet_az           = "us-east-2c"
-# vpc_pri_subnet_cidr         = "10.0.3.0/24"
 pub_map_public_ip_on_launch = true
 pri_map_public_ip_on_launch = false
 igw_description = {

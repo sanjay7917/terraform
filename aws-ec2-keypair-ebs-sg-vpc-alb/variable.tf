@@ -99,24 +99,6 @@ variable "pub_sub_tag" {
 variable "pri_sub_tag" {
   type = map(any)
 }
-# variable "vpc_pub_subnet1_az" {
-#   type = string
-# }
-# variable "vpc_pub_subnet1_cidr" {
-#   type = string
-# }
-# variable "vpc_pub_subnet2_az" {
-#   type = string
-# }
-# variable "vpc_pub_subnet2_cidr" {
-#   type = string
-# }
-# variable "vpc_pri_subnet_az" {
-#   type = string
-# }
-# variable "vpc_pri_subnet_cidr" {
-#   type = string
-# }
 variable "pub_map_public_ip_on_launch" {
   type = bool
 }

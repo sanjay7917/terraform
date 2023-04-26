@@ -23,23 +23,6 @@ resource "aws_subnet" "pri_sub" {
   map_public_ip_on_launch = var.pri_map_public_ip_on_launch
   tags                    = merge(var.pri_sub_tag, { Name = "${var.namespace}-PrivateSubnet-${count.index + 1}" })
 }
-# resource "aws_subnet" "pub_sub1" {
-#   vpc_id            = aws_vpc.myvpc.id
-#   availability_zone = var.vpc_pub_subnet1_az
-#   cidr_block        = var.vpc_pub_subnet1_cidr
-# }
-# resource "aws_subnet" "pub_sub2" {
-#   vpc_id            = aws_vpc.myvpc.id
-#   availability_zone = var.vpc_pub_subnet2_az
-#   cidr_block        = var.vpc_pub_subnet2_cidr
-# }
-#CREATE PRIVATE SUBNET
-# resource "aws_subnet" "pri_sub" {
-#   vpc_id                  = aws_vpc.myvpc.id
-#   availability_zone       = var.vpc_pri_subnet_az
-#   cidr_block              = var.vpc_pri_subnet_cidr
-#   map_public_ip_on_launch = var.pri_map_public_ip_on_launch
-# }
 
 #CREATE IGW
 resource "aws_internet_gateway" "igw" {
@@ -62,10 +45,6 @@ resource "aws_route_table_association" "pub_rts" {
   subnet_id      = aws_subnet.pub_sub[count.index].id
   route_table_id = aws_route_table.pub_rt.id
 }
-# resource "aws_route_table_association" "pub_rts2" {
-#   subnet_id      = aws_subnet.pub_sub[1].id
-#   route_table_id = aws_route_table.pub_rt.id
-# }
 
 #CREATE PRIVATE ROUTE TABLE
 resource "aws_route_table" "pri_rt" {
@@ -73,10 +52,6 @@ resource "aws_route_table" "pri_rt" {
 }
 
 #ASSOCIATE PRIVATE SUBNET TO PUBLIC ROUTE TABLE
-# resource "aws_route_table_association" "pri_rts" {
-#   subnet_id      = aws_subnet.pri_sub.id
-#   route_table_id = aws_route_table.pri_rt.id
-# }
 resource "aws_route_table_association" "pri_rts" {
   count          = length(var.vpc_private_subnets_cidr)
   subnet_id      = aws_subnet.pri_sub[count.index].id
