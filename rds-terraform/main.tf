@@ -19,27 +19,28 @@ resource "aws_instance" "this" {
     Name = "iae"
   }
 }
-resource "aws_db_instance" "example" {
+resource "aws_db_instance" "this" {
   engine               = "mariadb"
   engine_version       = "10.3"
   instance_class       = "db.t2.micro"
   allocated_storage    = 20
-  db_name              = "example_db"
+  db_name              = "this_db"
   username             = "admin"
   password             = "password"
   parameter_group_name = "default.mariadb10.3"
+  skip_final_snapshot  = true
   publicly_accessible  = false
 }
-resource "null_resource" "example" {
+resource "null_resource" "this" {
   connection {
     type     = "tcp"
-    user     = aws_db_instance.example.username
-    password = aws_db_instance.example.password
-    host     = aws_db_instance.example.endpoint
+    user     = aws_db_instance.this.username
+    password = aws_db_instance.this.password
+    host     = aws_db_instance.this.endpoint
     port     = 3306
   }
 
   # provisioner "local-exec" {
-  #   command = "mysql -h ${aws_db_instance.example.endpoint} -u ${aws_db_instance.example.username} -p${aws_db_instance.example.password} < sqlscript.sql"
+  #   command = "mysql -h ${aws_db_instance.this.endpoint} -u ${aws_db_instance.this.username} -p${aws_db_instance.this.password} < sqlscript.sql"
   # }
 }
