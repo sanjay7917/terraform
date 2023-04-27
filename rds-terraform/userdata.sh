@@ -20,8 +20,8 @@
 #RDS CONFIG
 sudo apt-get install mysql* -y
 sudo systemctl start mysql 
-sudo systemctl status mysql 
-mysql -h terraform-20230426163512021600000001.cmomitk2ez52.us-east-2.rds.amazonaws.com -u admin -ppassword
+# sudo systemctl status mysql 
+mysql -h terraform-20230427114740068200000001.cmomitk2ez52.us-east-2.rds.amazonaws.com -u admin -ppassword < sqlscript.sql
 # CREATE DATABASE studentapp;
 # show databases;
 # use studentapp;

@@ -10,3 +10,4 @@ CREATE TABLE if not exists students(student_id INT NOT NULL AUTO_INCREMENT,
   student_year_passed VARCHAR(10) NOT NULL,
   PRIMARY KEY (student_id)
   );
+  
