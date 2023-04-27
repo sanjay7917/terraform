@@ -40,18 +40,20 @@ resource "aws_instance" "this" {
     # inline = [
     #   "sudo apt-get install mysql* -y",
     #   "sudo systemctl start mysql",
-    #   "mysql -h ${aws_db_instance.this.endpoint} -u ${aws_db_instance.this.username} -p${aws_db_instance.this.password} < sqlscript.sql"
+    #   # "mysql -h ${aws_db_instance.this.endpoint} -u ${aws_db_instance.this.username} -p${aws_db_instance.this.password} < sqlscript.sql"
+    #   "mysql -h terraform-20230427135248170300000001.cmomitk2ez52.us-east-2.rds.amazonaws.com -u admin -ppassword < sqlscript.sql"
     # ]
     script = "./userdata.sh"
   }
+
   # provisioner "local-exec" {
-  #   connection {
-  #     type     = "tcp"
-  #     user     = aws_db_instance.this.username
-  #     password = aws_db_instance.this.password
-  #     host     = aws_db_instance.this.endpoint
-  #     port     = 3306
-  #   }
+    # connection {
+    #   type     = "tcp"
+    #   user     = aws_db_instance.this.username
+    #   password = aws_db_instance.this.password
+    #   host     = aws_db_instance.this.endpoint
+    #   port     = 3306
+    # }
   #   # when    = "change"
   #   interpreter = ["/bin/bash", "-c"]
   #   # working_dir = "/home/ubuntu"
@@ -62,19 +64,14 @@ resource "aws_instance" "this" {
   # provisioner "remote-exec" {
   #   script = "./sqlscript.sql"
   # }
-
-  # provisioner "remote-exec" {
-  #   inline = [
-  #     "sudo apt-get install mysql* -y",
-  #     "sudo systemctl start mysql",
-  #     "sudo systemctl status mysql",
-  #     "mysql -h ${aws_db_instance.this.endpoint} -u ${aws_db_instance.this.username} -p${aws_db_instance.this.password} < sqlscript.sql"
-  #   ]
-  # }
   tags = {
     Name = "iae"
   }
 }
+  # output "name" {
+  #   sensitive = true
+  #   value = "${aws_db_instance.this.endpoint}, ${aws_db_instance.this.username}, ${aws_db_instance.this.password}"
+  # }
 
 
 # resource "null_resource" "this" {
