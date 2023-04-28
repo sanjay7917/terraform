@@ -18,10 +18,11 @@
 # sudo ./catalina.sh start
 
 #RDS CONFIG
-sudo apt-get install mysql* -y
-sudo systemctl start mysql 
+# sudo apt-get install mysql* -y
+# sudo systemctl start mysql 
+# sudo systemctl enable mysql
 # sudo systemctl status mysql (DO NOT DO THIS)
-mysql -h terraform-20230427114740068200000001.cmomitk2ez52.us-east-2.rds.amazonaws.com -u admin -ppassword < sqlscript.sql
+# mysql -h terraform-20230427114740068200000001.cmomitk2ez52.us-east-2.rds.amazonaws.com -u admin -ppassword < sqlscript.sql
 # CREATE DATABASE studentapp;
 # show databases;
 # use studentapp;
@@ -34,3 +35,7 @@ mysql -h terraform-20230427114740068200000001.cmomitk2ez52.us-east-2.rds.amazona
 # student_year_passed VARCHAR(10) NOT NULL,
 # PRIMARY KEY (student_id)
 # );
+# aws secretsmanager get-secret-value  --secret-id kisikopatanachale --region=us-east-2 | jq -r .SecretString | jq -r .password
+# aws secretsmanager get-secret-value  --secret-id kisikopatanachale --region=us-east-2 --query SecretString --output text (FOR SECRET MANAGER KEY AND VALUE IN JSON FORMAT)
+# aws secretsmanager get-secret-value --secret-id kisikopatanachale --query 'SecretString' --output text | jq -r 'to_entries[] | "\(.key)=\(.value)"' (FOR SECRET MANAGER KEY AND VALUE)
+# aws secretsmanager get-secret-value --secret-id kisikopatanachale --query 'SecretString' --output text | jq -r 'to_entries[] | "\(.value)"' (FOR SECRET MANAGER VALUE)
