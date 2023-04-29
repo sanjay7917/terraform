@@ -59,7 +59,6 @@ resource "aws_instance" "this" {
   ami           = "ami-06c4532923d4ba1ec"
   instance_type = "t2.micro"
   key_name      = aws_key_pair.key.key_name
-  # user_data     = file("${path.module}/userdata.sh")
   connection {
     type        = "ssh"
     user        = "ubuntu"
