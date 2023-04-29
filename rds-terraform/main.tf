@@ -9,10 +9,16 @@ terraform {
     key    = "terraform.tfstate"
   }
 }
+#We Can USE Terraform to Create Secret Manager and Store value.
+#But if we do that our username and password will be displyed in our CODE.
+#So its better if create Secret Manager through AWS Console and store our username and password.
+#Then we can just Retrive Secret Manager's value using data resource.
+#We can use Secret's ARN or Secret's Name to retrive value from Secret Manager. The secret must already exist.
 # variable "example" {
 #   type = map(string)
 #   default = {
-#     password = "admin123"
+#     username = "admin"
+#     password = "Admin123"
 #   }
 # }
 # resource "aws_secretsmanager_secret" "rdbpassword" {
@@ -26,17 +32,21 @@ terraform {
 # }
 # data "aws_secretsmanager_secret_version" "rdbpassword" {
 #   secret_id = aws_secretsmanager_secret.rdbpassword.id
-#   # version_id = "AWSCURRENT"
 # }
+data "aws_secretsmanager_secret_version" "secret" {
+  secret_id = "one_piece"  
+  # secret_id = "arn:aws:secretsmanager:us-east-2:385685296160:secret:one_piece_1-bFX4ti"
+}
 resource "aws_db_instance" "this" {
   engine            = "mariadb"
   engine_version    = "10.3"
   instance_class    = "db.t2.micro"
   allocated_storage = 20
   db_name           = "this_db"
-  username          = var.rds_username
-  password          = var.rds_password
-  # password          = "${jsondecode(data.aws_secretsmanager_secret_version.rdbpassword.secret_string)["password"]}"
+  # username          = var.rds_username
+  # password          = var.rds_password
+  username             = jsondecode(data.aws_secretsmanager_secret_version.secret.secret_string)["username"]
+  password             = jsondecode(data.aws_secretsmanager_secret_version.secret.secret_string)["password"]
   parameter_group_name = "default.mariadb10.3"
   skip_final_snapshot  = true
   publicly_accessible  = false
@@ -104,17 +114,28 @@ resource "aws_instance" "this" {
   # rm /tmp/sqlscript.sql
   # EOF
   #---------------------WAY THREE---------------------
+  # provisioner "remote-exec" {
+  #   inline = [
+  #     "sudo apt update -y",
+  #     "sudo apt-get install mysql* -y",
+  #     "sudo systemctl start mysql",
+  #     "sudo systemctl enable mysql",
+  #     "mysql -h ${split(":", aws_db_instance.this.endpoint)[0]} -u ${var.rds_username} -p${var.rds_password} < /tmp/sqlscript.sql"
+  #   ]
+  # }
+  #---------------------WAY FOUR(BEST WAY)---------------------
   provisioner "remote-exec" {
     inline = [
       "sudo apt update -y",
       "sudo apt-get install mysql* -y",
       "sudo systemctl start mysql",
       "sudo systemctl enable mysql",
-      "mysql -h ${split(":", aws_db_instance.this.endpoint)[0]} -u ${var.rds_username} -p${var.rds_password} < /tmp/sqlscript.sql"
+      "mysql -h ${split(":", aws_db_instance.this.endpoint)[0]} -u ${aws_db_instance.this.username} -p${aws_db_instance.this.password} < /tmp/sqlscript.sql",
+      "rm /tmp/sqlscript.sql"
     ]
   }
   tags = {
-    Name = "tension"
+    Name = "RDS_Tension"
   }
 }
 output "rds_endpoint" {
