@@ -1,6 +1,3 @@
-# variable "rds_endpoint" {
-#   type = string  
-# }
 variable "rds_username" {
   description = "Database administrator username"
   type        = string

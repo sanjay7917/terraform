@@ -40,3 +40,4 @@
 # aws secretsmanager get-secret-value --secret-id hoja_bhai --query 'SecretString' --output text | jq -r 'to_entries[] | "\(.key)=\(.value)"' (FOR SECRET MANAGER KEY AND VALUE)
 # aws secretsmanager get-secret-value --secret-id hoja_bhai --query 'SecretString' --output text | jq -r 'to_entries[] | "\(.value)"' (FOR SECRET MANAGER VALUE)
 # "aws secretsmanager get-secret-value --secret-id hoja_bhai --query 'SecretString' --output text | jq -r 'to_entries[] | "\(.value)"' > $PA"
+# echo terraform-20230429155332943100000001.cmomitk2ez52.us-east-2.rds.amazonaws.com:3306 | sed 's/:3306//g'
