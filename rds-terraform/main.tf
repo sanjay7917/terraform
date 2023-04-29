@@ -34,8 +34,7 @@ terraform {
 #   secret_id = aws_secretsmanager_secret.rdbpassword.id
 # }
 data "aws_secretsmanager_secret_version" "secret" {
-  secret_id = "one_piece"  
-  # secret_id = "arn:aws:secretsmanager:us-east-2:385685296160:secret:one_piece_1-bFX4ti"
+  secret_id = "one_piece"
 }
 resource "aws_db_instance" "this" {
   engine            = "mariadb"
