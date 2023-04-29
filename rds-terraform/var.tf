@@ -1,17 +1,14 @@
 # variable "rds_endpoint" {
-#   type    = string
-#   # default = aws_db_instance.this.endpoint
+#   type = string  
 # }
-# variable "user" {
-#   description = "Database administrator username"
-#   type        = string
-#   # sensitive   = true
-#   default = "admin"
-# }
+variable "rds_username" {
+  description = "Database administrator username"
+  type        = string
+  default     = "admin"
+}
 
-# variable "pass" {
-#   description = "Database administrator password"
-#   type        = string
-#   # sensitive   = true
-#   # default = "Admin123"
-# }
+variable "rds_password" {
+  description = "Database administrator password"
+  type        = string
+  default     = "Admin123"
+}
