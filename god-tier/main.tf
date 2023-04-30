@@ -22,8 +22,22 @@ module "vpc_module" {
   sg_ports               = var.sg_ports
   sg_ingress_description = var.sg_ingress_description
 }
-# module "vm_module" {
-#   source = "./modules/vms"
-#   img               = var.ami
-#   vm_size           = var.instance_type
-# }
+
+module "rds_module" {
+  source = "./modules/rds"
+  #RDS VARIABLE PASS
+  sm_secret_id             = var.sm_secret_id
+  rds_identifier           = var.rds_identifier
+  rds_engine               = var.rds_engine
+  rds_engine_version       = var.rds_engine_version
+  rds_instance_class       = var.rds_instance_class
+  rds_storage_type         = var.rds_storage_type
+  rds_allocated_storage    = var.rds_allocated_storage
+  rds_parameter_group_name = var.rds_parameter_group_name
+  rds_skip_final_snapshot  = var.rds_skip_final_snapshot
+  rds_publicly_accessible  = var.rds_publicly_accessible
+  #DB_SUBNET_GROUP VARIABLE PASS
+  db_subnet_group_name   = var.db_subnet_group_name
+  vpc_security_group_ids = module.vpc_module.vpc_security_group_ids
+  pri_sub_ids            = module.vpc_module.pri_sub_ids
+}
