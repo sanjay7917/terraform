@@ -2,13 +2,13 @@ provider "aws" {
   region  = "us-east-2"
   profile = "default"
 }
-terraform {
-  backend "s3" {
-    bucket = "mytfstatefile112233"
-    region = "us-east-2"
-    key    = "terraform.tfstate"
-  }
-}
+# terraform {
+#   backend "s3" {
+#     bucket = "mytfstatefile112233"
+#     region = "us-east-2"
+#     key    = "terraform.tfstate"
+#   }
+# }
 #We Can USE Terraform to Create Secret Manager and Store value.
 #But if we do that our username and password will be displyed in our CODE.
 #So its better if create Secret Manager through AWS Console and store our username and password.
@@ -34,7 +34,7 @@ terraform {
 #   secret_id = aws_secretsmanager_secret.rdbpassword.id
 # }
 data "aws_secretsmanager_secret_version" "secret" {
-  secret_id = "one_piece"
+  secret_id = "valak_oo"
 }
 resource "aws_db_instance" "this" {
   engine            = "mariadb"

@@ -1,4 +1,4 @@
-#AWS PROVIDER VARIABLE
+#AWS PROVIDER AND NAMESPACE VARIABLE
 variable "provider_region" {
   type = string
 }

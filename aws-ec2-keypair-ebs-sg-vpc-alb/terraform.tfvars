@@ -1,4 +1,4 @@
-#AWS PROVIDER TFVARS
+#AWS PROVIDER AND NAMESPACE TFVARS
 provider_region  = "us-east-2"
 provider_profile = "default"
 namespace        = "Dev"
