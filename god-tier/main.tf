@@ -1,3 +1,4 @@
+#VPC MODULE
 module "vpc_module" {
   source    = "./modules/vpc"
   namespace = var.namespace
@@ -22,7 +23,7 @@ module "vpc_module" {
   sg_ports               = var.sg_ports
   sg_ingress_description = var.sg_ingress_description
 }
-
+#RDS MODULE
 module "rds_module" {
   source = "./modules/rds"
   #RDS VARIABLE PASS
@@ -39,5 +40,13 @@ module "rds_module" {
   #DB_SUBNET_GROUP VARIABLE PASS
   db_subnet_group_name   = var.db_subnet_group_name
   vpc_security_group_ids = module.vpc_module.vpc_security_group_ids
+  pri_sub_ids            = module.vpc_module.pri_sub_ids
+  db_subnet_tags         = var.db_subnet_tags
+}
+#INSTANCE-AUTOSCALING MODULE
+module "instance-autoscaling" {
+  source                 = "./modules/instance-autoscaling"
+  vpc_security_group_ids = module.vpc_module.vpc_security_group_ids
+  pub_sub_ids            = module.vpc_module.pub_sub_ids
   pri_sub_ids            = module.vpc_module.pri_sub_ids
 }

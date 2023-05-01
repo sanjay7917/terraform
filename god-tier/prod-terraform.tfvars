@@ -41,19 +41,19 @@ aws_sg_description     = "test sg"
 sg_ports               = [22, 80, 8080, 3306]
 sg_ingress_description = "SSH from VPC"
 #SECRET MANAGER TFVARS
-sm_secret_id = "SECRET MANAGER NAME FROM AWS"
+sm_secret_id = "tothemoon"
 #RDS TFVARS
-rds_identifier        = "rds-db-instance"
-rds_engine            = "mariadb"
-rds_engine_version    = "10.3"
-rds_instance_class    = "db.t2.micro"
-rds_allocated_storage = 20
-rds_storage_type      = "gp2"
-# rds_db_name = "${jsondecode(data.aws_secretsmanager_secret_version.secret.secret_string)["db_name"]}"
-# rds_username = "${jsondecode(data.aws_secretsmanager_secret_version.secret.secret_string)["username"]}"
-# rds_password = "${jsondecode(data.aws_secretsmanager_secret_version.secret.secret_string)["password"]}"
+rds_identifier           = "rds-db-instance"
+rds_engine               = "mariadb"
+rds_engine_version       = "10.3"
+rds_instance_class       = "db.t2.micro"
+rds_allocated_storage    = 20
+rds_storage_type         = "gp2"
 rds_parameter_group_name = "default.mariadb10.3"
 rds_skip_final_snapshot  = true
 rds_publicly_accessible  = false
 #DB_SUBNET_GROUP TFVARS
 db_subnet_group_name = "rds-db-subnet-group-name"
+db_subnet_tags = {
+  Name = "RDS-DB-subnet-group"
+}

@@ -21,18 +21,6 @@ variable "rds_allocated_storage" {
 variable "rds_storage_type" {
     type = string
 }
-# variable "rds_db_name" {
-#   type = string
-# }
-# variable "rds_username" {
-#   type = string
-# }
-# variable "rds_password" {
-#   type = string
-# }
-# variable "rds_vpc_security_group_ids" {
-#     type = list(any)
-# }
 variable "rds_parameter_group_name" {
   type = string
 }
@@ -51,4 +39,7 @@ variable "vpc_security_group_ids" {
 }
 variable "pri_sub_ids" {
   type = list(string)
+}
+variable "db_subnet_tags" {
+  type = map(any)
 }
