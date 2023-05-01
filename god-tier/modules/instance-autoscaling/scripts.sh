@@ -1,21 +1,34 @@
 #!/bin/bash
 #SSH KEY PERSMISSION
-sudo chmod 600 /home/ubuntu/id_rsa
+# sudo chmod 600 /home/ubuntu/id_rsa
 #NGINX INSTALLATION
 # sudo apt-get install nginx -y
 # sudo systemctl start nginx 
 # sudo systemctl enable nginx
-# echo "Machine IP: $HOSTNAME" > /var/www/html/index.nginx-debian.html
-
+# sudo wget https://s3-us-west-2.amazonaws.com/studentapi-cit/index.html -P /var/www/html/
+# sudo sed -i '23i\
+#       server_names_hash_bucket_size 128;' /etc/nginx/nginx.conf
+# sudo sed -i '38i\
+#       server {\
+#           listen 80;\
+#           listen [::]:80;\
+#           server_name ${var.nginx_lb_dns};\
+#           location / {\
+#               proxy_pass http://${var.internal_lb_dns}/student/;\
+#           }\
+#       }' /etc/nginx/nginx.conf
+# <h2 style="text-align: center;"><a href="student"><strong>Enter to Student Application</strong></a></h2>
+# sudo systemctl restart nginx
 #TOMCAT INSTALLATION
 # sudo apt update -y
 # sudo apt-get install openjdk-11-jre -y
-# sudo curl -O https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.74/bin/apache-tomcat-9.0.74.tar.gz
+# sudo wget https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.74/bin/apache-tomcat-9.0.74.tar.gz
 # sudo tar -xzvf apache-tomcat-9.0.74.tar.gz -C /opt
-# sudo curl -O https://s3-us-west-2.amazonaws.com/studentapi-cit/student.war
-# sudo curl -O https://s3-us-west-2.amazonaws.com/studentapi-cit/mysql-connector.jar
-# sudo mv mysql-connector.jar /opt/apache-tomcat-9.0.74/lib
-# sudo mv student.war /opt/apache-tomcat-9.0.74/webapps
+# sudo wget https://s3-us-west-2.amazonaws.com/studentapi-cit/student.war -P /opt/apache-tomcat-9.0.74/webapps
+# sudo wget https://s3-us-west-2.amazonaws.com/studentapi-cit/mysql-connector.jar -P /opt/apache-tomcat-9.0.74/lib
+# sudo sed -i '21i\
+# <Resource name="jdbc/TestDB" auth="Container" type="javax.sql.DataSource" maxTotal="500" maxIdle="30" maxWaitMillis="1000" username="admin" password="Admin$123" driverClassName="com.mysql.jdbc.Driver" url="jdbc:mysql://${var.rds_endpoint}:3306/studentapp?useUnicode=yes&amp;characterEncoding=utf8"/>\
+# ' apache-tomcat-9.0.74/conf/context.xml
 # cd /opt/apache-tomcat-9.0.74/bin/
 # sudo ./catalina.sh start
 

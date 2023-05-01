@@ -9,6 +9,6 @@ terraform {
 }
 # Connect AWS account to Terraform
 provider "aws" {
-  region  = var.provider_region
-  profile = var.provider_profile
+  region  = var.region
+  profile = var.profile
 }

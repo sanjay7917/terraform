@@ -1,10 +1,7 @@
-#INSTANCE TFVARS
-# ami           = "ami-06c4532923d4ba1ec"
-# instance_type = ["t2.micro"]
 #AWS PROVIDER AND NAMESPACE TFVARS
-provider_region  = "us-east-2"
-provider_profile = "default"
-namespace        = "Dev"
+region    = "us-east-2"
+profile   = "default"
+namespace = "Dev"
 #VPC TFVARS
 vpc_cidr_block = "10.0.0.0/16"
 vpc_tags = {
@@ -41,7 +38,7 @@ aws_sg_description     = "test sg"
 sg_ports               = [22, 80, 8080, 3306]
 sg_ingress_description = "SSH from VPC"
 #SECRET MANAGER TFVARS
-sm_secret_id = "tothemoon"
+sm_secret_id = "cathonameko"
 #RDS TFVARS
 rds_identifier           = "rds-db-instance"
 rds_engine               = "mariadb"
@@ -56,4 +53,13 @@ rds_publicly_accessible  = false
 db_subnet_group_name = "rds-db-subnet-group"
 db_subnet_tags = {
   Name = "RDS-DB-subnet-group"
+}
+#INSTANCE-AUTOSCALING TFVARS
+key_name   = "yek"
+image_type = "t2.micro"
+template_tags = {
+  bastion_host_template     = "bastion_host_server"
+  nginx_webserver_template  = "nginx_webserver_server"
+  tomcat_webserver_template = "tomcat_webserver_server"
+  rds_db_template           = "rds_db_server"
 }

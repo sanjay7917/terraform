@@ -49,4 +49,10 @@ module "instance-autoscaling" {
   vpc_security_group_ids = module.vpc_module.vpc_security_group_ids
   pub_sub_ids            = module.vpc_module.pub_sub_ids
   pri_sub_ids            = module.vpc_module.pri_sub_ids
+  rds_endpoint           = module.rds_module.rds_endpoint
+  rds_username           = module.rds_module.rds_username
+  rds_password           = module.rds_module.rds_password
+  key_name               = var.key_name
+  image_type             = var.image_type
+  template_tags          = var.template_tags
 }

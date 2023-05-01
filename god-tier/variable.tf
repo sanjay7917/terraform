@@ -1,8 +1,8 @@
 #AWS PROVIDER AND NAMESPACE VARIABLE
-variable "provider_region" {
+variable "region" {
   type = string
 }
-variable "provider_profile" {
+variable "profile" {
   type = string
 }
 variable "namespace" {
@@ -104,3 +104,12 @@ variable "db_subnet_tags" {
   type = map(any)
 }
 #INSTANCE-AUTOSCALING VARIABLE
+variable "key_name" {
+  type = string
+}
+variable "image_type" {
+  type = string
+}
+variable "template_tags" {
+  type = map(any)
+}
