@@ -17,7 +17,7 @@
 #               proxy_pass http://${var.internal_lb_dns}/student/;\
 #           }\
 #       }' /etc/nginx/nginx.conf
-# <h2 style="text-align: center;"><a href="student"><strong>Enter to Student Application</strong></a></h2>
+# <h2 style="text-align: center;"><a href="http://${var.internal_lb_dns}/student/"><strong>Enter to Student Application</strong></a></h2>
 # sudo systemctl restart nginx
 #TOMCAT INSTALLATION
 # sudo apt update -y

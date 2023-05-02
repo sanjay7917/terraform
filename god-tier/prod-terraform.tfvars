@@ -13,7 +13,7 @@ vpc_tags = {
 vpc_public_subnets_cidr  = ["10.0.1.0/24", "10.0.2.0/24"]
 vpc_public_subnets_az    = ["us-east-2a", "us-east-2b"]
 vpc_private_subnets_cidr = ["10.0.3.0/24", "10.0.4.0/24", "10.0.5.0/24", "10.0.6.0/24", "10.0.7.0/24", "10.0.8.0/24"]
-vpc_private_subnets_az   = ["us-east-2b", "us-east-2c"]
+vpc_private_subnets_az   = ["us-east-2a", "us-east-2b"]
 pub_sub_tag = {
   Type = "Internet Facing"
 }
@@ -38,7 +38,7 @@ aws_sg_description     = "test sg"
 sg_ports               = [22, 80, 8080, 3306]
 sg_ingress_description = "SSH from VPC"
 #SECRET MANAGER TFVARS
-sm_secret_id = "cathonameko"
+sm_secret_id = "serialkiller"
 #RDS TFVARS
 rds_identifier           = "rds-db-instance"
 rds_engine               = "mariadb"
@@ -62,4 +62,11 @@ template_tags = {
   nginx_webserver_template  = "nginx_webserver_server"
   tomcat_webserver_template = "tomcat_webserver_server"
   rds_db_template           = "rds_db_server"
+}
+#ALB TFVARS
+nginx_alb_tags = {
+  Name = "ALB_NGINX"
+}
+tomcat_alb_tags = {
+  Name = "ALB_TOMCAT"
 }

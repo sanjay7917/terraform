@@ -96,7 +96,7 @@ variable "rds_skip_final_snapshot" {
 variable "rds_publicly_accessible" {
   type = bool
 }
-#DB_SUBNET_GROUP
+#DB_SUBNET_GROUP VARIABLE
 variable "db_subnet_group_name" {
   type = string
 }
@@ -112,4 +112,11 @@ variable "image_type" {
 }
 variable "template_tags" {
   type = map(any)
+}
+#ALB VARIABLE
+variable "nginx_alb_tags" {
+  type = map(any)
+}
+variable "tomcat_alb_tags" {
+  type = map(string)
 }

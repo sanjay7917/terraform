@@ -52,7 +52,21 @@ module "instance-autoscaling" {
   rds_endpoint           = module.rds_module.rds_endpoint
   rds_username           = module.rds_module.rds_username
   rds_password           = module.rds_module.rds_password
+  nginx_lb_dns           = module.alb_module.nginx_lb_dns
+  nginx_lb_target_group  = module.alb_module.nginx_lb_target_group
+  tomcat_lb_dns          = module.alb_module.tomcat_lb_dns
+  tomcat_lb_target_group = module.alb_module.tomcat_lb_target_group
   key_name               = var.key_name
   image_type             = var.image_type
   template_tags          = var.template_tags
+}
+#APPLICATION LOAD BALANCER MODULE
+module "alb_module" {
+  source                 = "./modules/alb"
+  vpc_id                 = module.vpc_module.vpc_id
+  vpc_security_group_ids = module.vpc_module.vpc_security_group_ids
+  pub_sub_ids            = module.vpc_module.pub_sub_ids
+  pri_sub_ids            = module.vpc_module.pri_sub_ids
+  nginx_alb_tags         = var.nginx_alb_tags
+  tomcat_alb_tags        = var.tomcat_alb_tags
 }

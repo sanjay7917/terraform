@@ -48,7 +48,6 @@ resource "aws_autoscaling_group" "bastion_host_scaling" {
     id      = aws_launch_template.bastion_host_template.id
     version = "$Latest"
   }
-  # target_group_arns = [aws_lb_target_group.example.arn]
 }
 #NGINX WEBSERVER CONFIGURATION
 resource "aws_launch_template" "nginx_webserver_template" {
@@ -63,9 +62,22 @@ resource "aws_launch_template" "nginx_webserver_template" {
     sudo apt-get install nginx -y
     sudo systemctl start nginx 
     sudo systemctl enable nginx
-    sudo wget https://s3-us-west-2.amazonaws.com/studentapi-cit/index.html -P /var/www/html/   
+    sudo wget https://s3-us-west-2.amazonaws.com/studentapi-cit/index.html -P /var/www/html/ 
+    sudo sed -i '23i\
+          server_names_hash_bucket_size 128;' /etc/nginx/nginx.conf
+    sudo sed -i '38i\
+          server {\
+              listen 80;\
+              listen [::]:80;\
+              server_name ${var.nginx_lb_dns};\
+              location / {\
+                  proxy_pass http://${var.tomcat_lb_dns}/student/;\
+              }\
+          }' /etc/nginx/nginx.conf
     sudo systemctl restart nginx
   EOF
+  #BELOW SCRIPT IS USED IN INDEX.HTML TO REDIRECT TO INTERNAL LOAD BALANCER USE THIS INSTEAD OF REVERSE PROXY
+    # sudo sed -i 's|<h2 style="text-align: center;"><a href="student"><strong>Enter to Student Application</strong></a></h2>|<h2 style="text-align: center;"><a href="http://${var.tomcat_lb_dns}/student/"><strong>Enter to Student Application</strong></a></h2>|g' /var/www/html/index.html
     )
   tag_specifications {
     resource_type = "instance"
@@ -76,18 +88,23 @@ resource "aws_launch_template" "nginx_webserver_template" {
 }
 resource "aws_autoscaling_group" "nginx_webserver_scaling" {
   name                      = "nginx_webserver_scaling"
-  max_size                  = 1
-  min_size                  = 1
-  desired_capacity          = 1
+  max_size                  = 2
+  min_size                  = 2
+  desired_capacity          = 2
   health_check_grace_period = 300
-  vpc_zone_identifier       = var.pri_sub_ids
+  # vpc_zone_identifier       = var.pri_sub_ids
+  vpc_zone_identifier = [var.pri_sub_ids[0], var.pri_sub_ids[1]] #IF desired_capacity = 2
   launch_template {
     id      = aws_launch_template.nginx_webserver_template.id
     version = "$Latest"
   }
-  # target_group_arns = [aws_lb_target_group.example.arn]
+  # target_group_arns = var.nginx_lb_target_group
 }
-#TOMCAT WEBSERVER CONFIGURATION
+resource "aws_autoscaling_attachment" "nginx_asg_attachment" {
+  autoscaling_group_name = aws_autoscaling_group.nginx_webserver_scaling.name
+  lb_target_group_arn    = var.nginx_lb_target_group
+}
+# TOMCAT WEBSERVER CONFIGURATION
 resource "aws_launch_template" "tomcat_webserver_template" {
   name            = "tomcat_webserver_template"
   image_id               = data.aws_ami.ubuntu.id
@@ -119,18 +136,21 @@ resource "aws_launch_template" "tomcat_webserver_template" {
 }
 resource "aws_autoscaling_group" "tomcat_webserver_scaling" {
   name                      = "tomcat_webserver_scaling"
-  max_size                  = 1
-  min_size                  = 1
-  desired_capacity          = 1
+  max_size                  = 2
+  min_size                  = 2
+  desired_capacity          = 2
   health_check_grace_period = 300
-  vpc_zone_identifier       = var.pri_sub_ids
+  vpc_zone_identifier = [var.pri_sub_ids[2], var.pri_sub_ids[3]] #IF desired_capacity = 2
   launch_template {
     id      = aws_launch_template.tomcat_webserver_template.id
     version = "$Latest"
   }
-  # target_group_arns = [aws_lb_target_group.example.arn]
 }
-#RDS DB CONFIGURATION
+resource "aws_autoscaling_attachment" "tomcat_asg_attachment" {
+  autoscaling_group_name = aws_autoscaling_group.tomcat_webserver_scaling.name
+  lb_target_group_arn    = var.tomcat_lb_target_group
+}
+# RDS DB CONFIGURATION
 resource "aws_launch_template" "rds_db_template" {
   name            = "rds_db_template"
   image_id               = data.aws_ami.ubuntu.id
@@ -167,9 +187,5 @@ resource "aws_autoscaling_group" "rds_dbserver_scaling" {
     id      = aws_launch_template.rds_db_template.id
     version = "$Latest"
   }
-  # target_group_arns = [aws_lb_target_group.example.arn]
 }
-# resource "aws_autoscaling_attachment" "asg_attachment_bar" {
-#   autoscaling_group_name = aws_autoscaling_group.example.id
-#   lb_target_group_arn    = aws_lb_target_group.example.arn
-# }
+
